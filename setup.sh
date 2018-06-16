@@ -47,7 +47,7 @@ download_cfg() {
     echo "=> Downloading configs (140BnF)"
     mkdir cfg
     wget https://raw.githubusercontent.com/pjreddie/darknet/master/cfg/coco.data -O cfg/coco.data -q --show-progress
-    wget https://raw.githubusercontent.com/pjreddie/darknet/master/cfg/yolov3.cfg -O cfg/yolov3.data -q --show-progress
+    wget https://raw.githubusercontent.com/pjreddie/darknet/master/cfg/yolov3.cfg -O cfg/yolov3.cfg -q --show-progress
 }
 
 if [ -d "./weights/" ]; then
