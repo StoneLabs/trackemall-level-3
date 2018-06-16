@@ -41,7 +41,7 @@ download_weights() {
     echo "=> Downloading weights (140BnF)"
     mkdir weights
     wget https://pjreddie.com/media/files/yolov3.weights -O weights/yolov3-608-140Bn.weights -q --show-progress
-    ln weights/yolov3-608-140Bn.weights weights/yolov3.weights -s
+    ln weights/yolov3-608-140Bn.weights weights/yolov3.weights
 }
 download_cfg() {
     echo "=> Downloading configs (140BnF)"
