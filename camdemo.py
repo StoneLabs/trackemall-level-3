@@ -63,14 +63,18 @@ if __name__ == "__main__":
         else:
             exit(1)
 
+        #print(frame)
         if r:
             start_time = time.time()
             dark_frame = Image(frame)
+            # TODO: Send to flask backend
+
             print("Calculating results...", end='', flush=True)
             results = net.detect(dark_frame)
             del dark_frame
 
             end_time = time.time()
+
             print(" [" + str(end_time-start_time) + "]")
 
             for cat, score, bounds in results:
