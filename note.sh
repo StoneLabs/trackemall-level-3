@@ -1,0 +1,1 @@
+LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(pwd)/darknet/ python3.6 note.py
