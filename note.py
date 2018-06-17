@@ -16,13 +16,13 @@ if __name__ == "__main__":
     while True: # Dont judge please
         time_start = time.time()
         print("Grabbing data... [ PREPARING ]", end='', flush=True)
-        cmd = ['wget', "127.0.0.1:2438/getNext", "-O", "/tmp/next_frame.id", "wb+"]
+        cmd = ['wget', "192.168.12.1:2438/getNext", "-O", "/tmp/next_frame.id", "wb+"]
         prc = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, input="")
         with open('/tmp/next_frame.id', 'r') as content_file:
             _id = content_file.read()
 
         print("\rGrabbing data... [  LOADING  ] \t#" + str(_id), end='', flush=True)
-        cmd = ['wget', "127.0.0.1:2438/getFrame?id=" + str(_id), "-O", "/tmp/next_frame.dat", "wb+"]
+        cmd = ['wget', "192.168.12.1:2438/getFrame?id=" + str(_id), "-O", "/tmp/next_frame.dat", "wb+"]
         prc = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, input="")
 
         print("\rGrabbing data... [ IMPORTING ] \t#" + str(_id), end='', flush=True)
@@ -41,7 +41,7 @@ if __name__ == "__main__":
             # DUMP TO STRING?
 
             # SEND TO SQL?
-            cmd = ['curl', '-i', '-X', 'POST', '-H', "Content-Type: multipart/form-data", '-F', "file=@/tmp/next_frame.det", "http://127.0.0.1:2438/setDetection?id=" + str(_id)]
+            cmd = ['curl', '-i', '-X', 'POST', '-H', "Content-Type: multipart/form-data", '-F', "file=@/tmp/next_frame.det", "http://192.168.12.1:2438/setDetection?id=" + str(_id)]
             prc = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, input="")
 
             cmd = ['rm', "/tmp/next_frame.det", "wb+"]
