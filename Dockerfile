@@ -11,8 +11,8 @@ ADD . /app
 RUN pip install --trusted-host pypi.python.org -r requirements.txt
 
 # make setup excecutable and run it
-RUN chmod +x ./app/setup.sh
-RUN sh ./app/setup.sh
+RUN chmod +x /app/setup.sh
+RUN sh /app/setup.sh
 
 # Define environment variable
 ENV SERVER "192.168.2.1"
