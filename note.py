@@ -47,7 +47,7 @@ if __name__ == "__main__":
             # DUMP TO STRING?
 
             # SEND TO SQL?
-            cmd = ['curl', '-i', '-X', 'POST', '-H', "Content-Type: multipart/form-data", '-F', "file=@/tmp/next_frame.det", "http://127.0.0.1:2438/setDetection?id=" + str(_id)]
+            cmd = ['curl', '-i', '-X', 'POST', '-H', "Content-Type: multipart/form-data", '-F', "file=@/tmp/next_frame.det", "http://151.216.9.10:2438/setDetection?id=" + str(_id)]
             prc = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, input="")
 
             cmd = ['rm', "/tmp/next_frame.det", "wb+"]
