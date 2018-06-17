@@ -13,7 +13,7 @@ if __name__ == "__main__":
     net = Detector(bytes("cfg/yolov3.cfg", encoding="utf-8"), bytes("weights/yolov3.weights", encoding="utf-8"), 0,
                    bytes("cfg/coco.data", encoding="utf-8"))
 
-    while True:
+    while True: # Dont judge please
         time_start = time.time()
         print("Grabbing data... [ PREPARING ]", end='', flush=True)
         cmd = ['wget', "127.0.0.1:2438/getNext", "-O", "/tmp/next_frame.id", "wb+"]
@@ -37,7 +37,7 @@ if __name__ == "__main__":
         with open("/tmp/next_frame.det", "wb+") as handle:
             time_up_start = time.time()
 
-            pickle.dump(results, handle)
+            pickle.dump({"results": results, "frame": frame}, handle) # im sorry
             # DUMP TO STRING?
 
             # SEND TO SQL?
