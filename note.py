@@ -6,6 +6,8 @@ from freenect import sync_get_depth as get_depth, sync_get_video as get_video
 from darknet.pydarknet import Detector, Image
 from numpy import asarray
 from PIL import Image as PImage
+import subprocess
+import pickle
 
 from pyqtgraph.Qt import QtGui, QtCore
 import pyqtgraph as pg
@@ -16,11 +18,18 @@ if __name__ == "__main__":
                    bytes("cfg/coco.data", encoding="utf-8"))
 
     while True:
-        # Receive frame matricies
+        print("Grabbing data... ", end='', flush=True)
+        cmd = ['wget', "127.0.0.1:2438/getNext", "-O", "/tmp/next_frame.dat", "wb+"]
+        prc = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, input="")
 
-        start_time = time.time()
+        print("\rGrabbing data... [ IMPORTING ]", end='', flush=True)
+        with open("/tmp/next_frame.dat", "rb") as handle:
+            frame = pickle.load(handle)
 
+        print("\rGrabbing data... [ DETECTING ]", end='', flush=True)
         dark_frame = Image(frame)
         results = net.detect(dark_frame)
 
+        print("\rGrabbing data... [ ANSWERING ]", end='', flush=True)
+        print("\rGrabbing data... [   DONE!   ]", flush=True)
         # Send back results
