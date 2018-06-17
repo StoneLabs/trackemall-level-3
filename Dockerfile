@@ -18,4 +18,4 @@ RUN sh /app/setup.sh
 ENV SERVER "192.168.2.1"
 
 # Run app.py when the container launches
-CMD ["python", "/app/note.py"]
+CMD ["sh", "/app/note.sh"]
