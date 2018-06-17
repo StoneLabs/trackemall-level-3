@@ -1,4 +1,4 @@
-#import os
+import os
 import time
 import numpy as np
 from darknet.pydarknet import Detector, Image
@@ -7,6 +7,7 @@ from PIL import Image as PImage
 import subprocess
 import pickle
 
+SERVER = os.getenv('SERVER', '151.216.9.10')
 
 if __name__ == "__main__":
 
@@ -16,7 +17,7 @@ if __name__ == "__main__":
     while True: # Dont judge please
         time_start = time.time()
         print("Grabbing data... [ PREPARING ]", end='', flush=True)
-        cmd = ['wget', "127.0.0.1:2438/getNext", "-O", "/tmp/next_frame.id", "wb+"]
+        cmd = ['wget', "151.216.9.10:2438/getNext", "-O", "/tmp/next_frame.id", "wb+"]
         prc = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, input="")
         with open('/tmp/next_frame.id', 'r') as content_file:
             _id = content_file.read()
@@ -27,7 +28,7 @@ if __name__ == "__main__":
             continue;
 
         print("\rGrabbing data... [  LOADING  ] #" + str(_id), end='', flush=True)
-        cmd = ['wget', "127.0.0.1:2438/getFrame?id=" + str(_id), "-O", "/tmp/next_frame.dat", "wb+"]
+        cmd = ['wget', "151.216.9.10:2438/getFrame?id=" + str(_id), "-O", "/tmp/next_frame.dat", "wb+"]
         prc = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, input="")
 
         print("\rGrabbing data... [ IMPORTING ] #" + str(_id), end='', flush=True)
