@@ -1,14 +1,10 @@
 #import os
 import time
 import numpy as np
-import cv2
-from freenect import sync_get_depth as get_depth, sync_get_video as get_video
 from darknet.pydarknet import Detector, Image
 from numpy import asarray
 from PIL import Image as PImage
 
-from pyqtgraph.Qt import QtGui, QtCore
-import pyqtgraph as pg
 
 if __name__ == "__main__":
 
