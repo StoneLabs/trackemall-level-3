@@ -14,18 +14,41 @@ if __name__ == "__main__":
                    bytes("cfg/coco.data", encoding="utf-8"))
 
     while True:
-        print("Grabbing data... ", end='', flush=True)
-        cmd = ['wget', "127.0.0.1:2438/getNext", "-O", "/tmp/next_frame.dat", "wb+"]
+        time_start = time.time()
+        print("Grabbing data... [ PREPARING ]", end='', flush=True)
+        cmd = ['wget', "127.0.0.1:2438/getNext", "-O", "/tmp/next_frame.id", "wb+"]
+        prc = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, input="")
+        with open('/tmp/next_frame.id', 'r') as content_file:
+            _id = content_file.read()
+
+        print("\rGrabbing data... [  LOADING  ] \t#" + str(_id), end='', flush=True)
+        cmd = ['wget', "127.0.0.1:2438/getFrame?id=" + str(_id), "-O", "/tmp/next_frame.dat", "wb+"]
         prc = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, input="")
 
-        print("\rGrabbing data... [ IMPORTING ]", end='', flush=True)
+        print("\rGrabbing data... [ IMPORTING ] \t#" + str(_id), end='', flush=True)
         with open("/tmp/next_frame.dat", "rb") as handle:
             frame = pickle.load(handle)
 
-        print("\rGrabbing data... [ DETECTING ]", end='', flush=True)
+        print("\rGrabbing data... [ DETECTING ] \t#" + str(_id), end='', flush=True)
         dark_frame = Image(frame)
         results = net.detect(dark_frame)
 
-        print("\rGrabbing data... [ ANSWERING ]", end='', flush=True)
-        print("\rGrabbing data... [   DONE!   ]", flush=True)
+        print("\rGrabbing data... [ ANSWERING ] \t#" + str(_id), end='', flush=True)
+        with open("/tmp/next_frame.det", "wb+") as handle:
+            time_up_start = time.time()
+
+            pickle.dump(results, handle)
+            # DUMP TO STRING?
+
+            # SEND TO SQL?
+            cmd = ['curl', '-i', '-X', 'POST', '-H', "Content-Type: multipart/form-data", '-F', "file=@/tmp/next_frame.det", "http://127.0.0.1:2438/setDetection?id=" + str(_id)]
+            prc = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, input="")
+
+            cmd = ['rm', "/tmp/next_frame.det", "wb+"]
+            prc = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, input="")
+
+        print("\rGrabbing data... [   DONE!   ] \t#" + str(_id), end='', flush=True)
+        print(" | Upload (s): " + str(round(time.time() - time_up_start, 2)), end='', flush=True)
+        print(" | Total (s): " + str(round(time.time() - time_start, 2)), end='', flush=True)
+        print(" | FPS: " + str(round(1 / (time.time() - time_start), 2)), flush=True)
         # Send back results
